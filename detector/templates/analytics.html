@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5 fade-up">
+
+    <div class="text-center mb-5">
+
+        <h2>Model Analytics Dashboard</h2>
+
+        <p class="text-muted">
+            Performance of Vision Transformer trained on CASIA v2.0
+        </p>
+
+    </div>
+
+    <!-- Metric Cards -->
+
+    <div class="row">
+
+        <div class="col-md-3">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-primary">83.38%</h2>
+
+                <p>Accuracy</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-success">91.19%</h2>
+
+                <p>Precision</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-warning">87.19%</h2>
+
+                <p>Recall</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-danger">89.14%</h2>
+
+                <p>F1 Score</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Live Database Analytics -->
+    <div class="card custom-card p-4 mt-5">
+        <h3>Live Detection Logs Analysis</h3>
+        <p class="text-muted">Real-time statistics compiled from actual user uploads and ViT model evaluations.</p>
+        <hr>
+        
+        <div class="row text-center mb-4">
+            <div class="col-md-4">
+                <div class="p-3 border rounded bg-dark text-white">
+                    <h2 id="total-uploads" class="text-primary fw-bold">-</h2>
+                    <p class="mb-0 text-muted">Total Images Evaluated</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded bg-dark text-white">
+                    <h2 id="avg-confidence" class="text-success fw-bold">-</h2>
+                    <p class="mb-0 text-muted">Average AI Confidence</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded bg-dark text-white">
+                    <h2 id="avg-tampered-pct" class="text-warning fw-bold">-</h2>
+                    <p class="mb-0 text-muted">Average Tampered Area</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="p-3 border rounded bg-light" style="min-height: 320px;">
+                    <h5 class="text-center text-dark mb-3">Classification Breakdown</h5>
+                    <div style="max-height: 250px; position: relative;">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="p-3 border rounded bg-light" style="min-height: 320px;">
+                    <h5 class="text-center text-dark mb-3">Upload Activity Timeline</h5>
+                    <div style="max-height: 250px; position: relative;">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/api/analytics-data/")
+                .then(response => response.json())
+                .then(data => {
+                    // Populate cards
+                    document.getElementById("total-uploads").innerText = data.total;
+                    document.getElementById("avg-confidence").innerText = data.avg_confidence + "%";
+                    document.getElementById("avg-tampered-pct").innerText = data.avg_tampered_pct + "%";
+                    
+                    if (data.total > 0) {
+                        // Prediction Doughnut Chart
+                        const ctxPred = document.getElementById('predictionChart').getContext('2d');
+                        new Chart(ctxPred, {
+                            type: 'doughnut',
+                            data: {
+                                labels: data.prediction_distribution.labels,
+                                datasets: [{
+                                    data: data.prediction_distribution.data,
+                                    backgroundColor: ['#dc3545', '#198754'], // Red for Fake, Green for Original
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }
+                        });
+                        
+                        // Activity Line Chart
+                        const ctxAct = document.getElementById('activityChart').getContext('2d');
+                        new Chart(ctxAct, {
+                            type: 'line',
+                            data: {
+                                labels: data.timeline.labels,
+                                datasets: [{
+                                    label: 'Uploads',
+                                    data: data.timeline.data,
+                                    borderColor: '#0d6efd',
+                                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                                    fill: true,
+                                    tension: 0.3,
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            stepSize: 1
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(err => console.error("Error loading analytics data:", err));
+        });
+    </script>
+
+    <!-- Model Information -->
+
+    <div class="card custom-card p-4 mt-5">
+
+        <h3>Model Information</h3>
+
+        <hr>
+
+        <table class="table">
+
+            <tr>
+
+                <th>Model</th>
+
+                <td>Vision Transformer (ViT Base Patch16-224)</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Dataset</th>
+
+                <td>CASIA v2.0</td>
+
+            </tr>
+
+            <tr>
+
+                <th>GPU</th>
+
+                <td>NVIDIA Tesla T4</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Framework</th>
+
+                <td>PyTorch + Django</td>
+
+            </tr>
+
+            <tr>
+
+                <th>Training Time</th>
+
+                <td>4483 Seconds</td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- Graphs -->
+
+    <div class="row mt-5">
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">Loss Curve</h5>
+
+                <img src="/media/results/loss_curve.png"
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">Accuracy Curve</h5>
+
+                <img src="/media/results/accuracy_curve.png"
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">ROC Curve</h5>
+
+                <img src="/media/results/roc_curve.png"
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">Confusion Matrix</h5>
+
+                <img src="/media/results/confusion_matrix.png"
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

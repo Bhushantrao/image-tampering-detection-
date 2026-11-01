@@ -1,0 +1,35 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+.venv-*/
+env/
+ENV/
+
+# SQLite Database
+*.sqlite3
+*.sqlite3-journal
+
+# Uploaded media files
+media/*
+!media/.gitkeep
+
+# Raw / uncompressed external datasets (3.3GB+)
+new/
+
+# Temporary scratch and experiment scripts
+scratch/
+
+# Duplicate model checkpoints
+saved_models/
+
+# Editor / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp

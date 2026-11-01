@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5 fade-up">
+
+    <div class="text-center mb-5">
+
+        <h2>
+
+            Detection Report
+
+        </h2>
+
+        <p class="text-muted">
+
+            Image Tampering Detection using ELA + Vision Transformer
+
+        </p>
+
+    </div>
+
+    <!-- Prediction Card -->
+
+    <div class="card custom-card p-4 mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-8">
+
+                <h4>
+
+                    Prediction
+
+                </h4>
+
+                {% if prediction == "Fake" %}
+
+                <span class="badge bg-danger fs-5">
+                    Fake Image
+                </span>
+
+                {% else %}
+
+                <span class="badge bg-success fs-5">
+                    Original Image
+                </span>
+
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h5>
+
+                    Confidence
+
+                </h5>
+
+                <div class="progress">
+
+                    <div class="progress-bar bg-primary"
+
+                         style="width:{{ confidence }}%;">
+
+                        {{ confidence }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Images -->
+
+    <div class="row">
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">
+
+                    Original Image
+
+                </h5>
+
+                <img src="{{ original_image }}"
+
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">
+
+                    Error Level Analysis
+
+                </h5>
+
+                <img src="{{ ela_image }}"
+
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Heatmap -->
+
+    <div class="row">
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">
+
+                    Heatmap
+
+                </h5>
+
+                <img src="{{ heatmap_image }}"
+
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card custom-card p-3">
+
+                <h5 class="text-center">
+
+                    Tampered Region
+
+                </h5>
+
+                <img src="{{ localized_image }}"
+
+                     class="img-fluid">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Explainable AI -->
+
+    <div class="row">
+
+        <div class="col-lg-12">
+
+            <div class="card custom-card p-4">
+
+                <h4>
+
+                    Explainable Result
+
+                </h4>
+
+                <img src="{{ explainable_image }}"
+
+                     class="img-fluid mb-4">
+
+                <p>
+
+                    {{ explanation }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Interactive Heatmap Opacity Slider (Fake Images only) -->
+    {% if prediction == "Fake" %}
+    <div class="row mt-4" id="opacity-slider-container">
+        <div class="col-lg-12">
+            <div class="card custom-card p-4">
+                <h4 class="mb-3">Interactive Grad-CAM Self-Attention Overlay</h4>
+                <p class="text-muted">Slide to dynamically blend the ELA Vision Transformer (ViT) self-attention heatmap over the original image.</p>
+                
+                <div class="position-relative d-flex justify-content-center align-items-center mb-4 border rounded overflow-hidden" style="max-height: 500px; background-color: #0f172a;">
+                    <!-- Base Original Image -->
+                    <img id="base-image" src="{{ original_image }}" class="img-fluid" style="max-height: 500px; object-fit: contain;">
+                    <!-- Overlaid Heatmap -->
+                    <img id="overlay-image" src="{{ heatmap_image }}" class="img-fluid position-absolute" style="max-height: 500px; object-fit: contain; top: 0; left: 50%; transform: translateX(-50%); opacity: 0.5; transition: opacity 0.05s ease;">
+                </div>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-secondary fw-semibold">Original Image</span>
+                    <input type="range" class="form-range flex-grow-1" id="opacity-slider" min="0" max="100" value="50">
+                    <span class="text-primary fw-semibold">Grad-CAM Heatmap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tampered Region Coordinates Table -->
+    {% if regions %}
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="card custom-card p-4">
+                <h4 class="mb-3">Localized Tampered Regions Metadata</h4>
+                <p class="text-muted">Detailed coordinate mapping and area coverage of detected manipulations.</p>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Region #</th>
+                                <th>X Coordinate</th>
+                                <th>Y Coordinate</th>
+                                <th>Width (pixels)</th>
+                                <th>Height (pixels)</th>
+                                <th>Tampered Area (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for region in regions %}
+                            <tr>
+                                <td><span class="badge bg-danger">Region {{ region.id }}</span></td>
+                                <td>{{ region.x }} px</td>
+                                <td>{{ region.y }} px</td>
+                                <td>{{ region.width }} px</td>
+                                <td>{{ region.height }} px</td>
+                                <td class="fw-semibold text-danger">{{ region.area_pct }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <script>
+        document.getElementById('opacity-slider').addEventListener('input', function(e) {
+            document.getElementById('overlay-image').style.opacity = e.target.value / 100;
+        });
+    </script>
+    {% endif %}
+
+    <style>
+        @media print {
+            body {
+                background-color: #fff !important;
+                color: #000 !important;
+            }
+            .navbar, .btn, footer, #opacity-slider-container, .text-center.mt-5 {
+                display: none !important;
+            }
+            .container {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .custom-card {
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                background: #fff !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+
+    <!-- Statistics -->
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-danger">
+
+                    {{ tampered_percentage }}%
+
+                </h2>
+
+                <p>
+
+                    Tampered Area
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card custom-card text-center p-4">
+
+                <h2 class="text-success">
+
+                    {{ confidence }}%
+
+                </h2>
+
+                <p>
+
+                    AI Confidence
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Buttons -->
+
+    <div class="text-center mt-5">
+
+        <a href="/"
+
+           class="btn btn-secondary">
+
+            Home
+
+        </a>
+
+        <button onclick="window.print()"
+
+                class="btn btn-success mx-2">
+
+            <i class="bi bi-file-earmark-pdf"></i> Download PDF Report
+
+        </button>
+
+        <a href="/"
+
+           class="btn btn-primary">
+
+            Analyze Another Image
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

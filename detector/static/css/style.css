@@ -1,0 +1,434 @@
+/* ===========================
+   IMAGE TAMPERING DETECTION
+   STYLE.CSS
+===========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    background:#F5F7FA;
+
+    color:#222;
+
+}
+
+/*==============================
+NAVBAR
+==============================*/
+
+.navbar{
+
+    background:#0F172A;
+
+}
+
+.navbar-brand{
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.nav-link{
+
+    color:white !important;
+
+    margin-left:18px;
+
+    transition:.3s;
+
+}
+
+.nav-link:hover{
+
+    color:#60A5FA !important;
+
+}
+
+/*==============================
+SECTION
+==============================*/
+
+.section-title{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+.section-subtitle{
+
+    color:#666;
+
+}
+
+/*==============================
+CARDS
+==============================*/
+
+.custom-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+}
+
+.custom-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+/*==============================
+BUTTONS
+==============================*/
+
+.btn-primary{
+
+    background:#2563EB;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 28px;
+
+    font-weight:600;
+
+}
+
+.btn-primary:hover{
+
+    background:#1D4ED8;
+
+}
+
+/*==============================
+UPLOAD BOX
+==============================*/
+
+.upload-box{
+
+    border:3px dashed #2563EB;
+
+    border-radius:20px;
+
+    padding:50px;
+
+    background:#FAFBFD;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.upload-box:hover{
+
+    background:#EEF5FF;
+
+}
+
+/*==============================
+IMAGES
+==============================*/
+
+img{
+
+    border-radius:15px;
+
+}
+
+/*==============================
+PROGRESS BAR
+==============================*/
+
+.progress{
+
+    height:25px;
+
+    border-radius:20px;
+
+}
+
+.progress-bar{
+
+    font-weight:600;
+
+}
+
+/*==============================
+BADGES
+==============================*/
+
+.badge{
+
+    font-size:16px;
+
+    padding:10px 18px;
+
+}
+
+/*==============================
+FOOTER
+==============================*/
+
+.footer{
+
+    background:#0F172A;
+
+    color:white;
+
+    padding:30px;
+
+    text-align:center;
+
+}
+
+/*==============================
+TABLES
+==============================*/
+
+table{
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+/*==============================
+ANIMATION
+==============================*/
+
+.fade-up{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*==============================
+LOADING
+==============================*/
+
+#loading{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(255,255,255,.9);
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    z-index:999;
+
+}
+
+/*==============================
+SCROLLBAR
+==============================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563EB;
+
+    border-radius:10px;
+
+}
+
+/* ==========================
+UPLOAD IMAGE PREVIEW
+========================== */
+
+#preview{
+
+    border-radius:15px;
+
+    margin-top:20px;
+
+}
+
+/* Loading Screen */
+
+#loading{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(255,255,255,.95);
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    z-index:99999;
+
+}
+
+.spinner-border{
+
+    width:5rem;
+
+    height:5rem;
+
+}
+
+/* ==========================
+RESULT PAGE
+========================== */
+
+.result-card{
+
+    margin-bottom:25px;
+
+}
+
+.result-card img{
+
+    border-radius:15px;
+
+    transition:.3s;
+
+}
+
+.result-card img:hover{
+
+    transform:scale(1.03);
+
+}
+
+.progress{
+
+    height:28px;
+
+}
+
+.progress-bar{
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.badge{
+
+    padding:12px 22px;
+
+}
+
+/* ==========================
+HISTORY PAGE
+========================== */
+
+.table img{
+
+    border-radius:10px;
+
+}
+
+.table td{
+
+    vertical-align:middle;
+
+}
+
+.table th{
+
+    text-align:center;
+
+}
+
+.table td{
+
+    text-align:center;
+
+}
+
+.table-hover tbody tr:hover{
+
+    background:#EEF5FF;
+
+}
+
+/* =======================
+ANALYTICS
+======================= */
+
+.table th{
+    width:220px;
+}
+
+.table td{
+    font-weight:500;
+}
+
