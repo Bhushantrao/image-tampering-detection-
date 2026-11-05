@@ -1,5 +1,5 @@
 # ============================================================
-# Image Tampering Detection using ViT + ELA
+# ELA-Enhanced Vision Transformer for Image Manipulation Detection
 # Research Version - Part 1
 # ============================================================
 

@@ -1,4 +1,4 @@
-# Image Tampering Detection Using ELA & Vision Transformer (ViT) with Explainable AI
+# ELA-Enhanced Vision Transformer for Image Manipulation Detection
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Django 5+](https://img.shields.io/badge/Django-5.0%2B-green.svg)](https://www.djangoproject.com/)

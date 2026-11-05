@@ -1,22 +1,22 @@
-console.log("Image Tampering Detection System");
+console.log("ELA-Enhanced Vision Transformer for Image Manipulation Detection System Loaded");
 
 // =======================
 // Image Preview
 // =======================
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
     const input = document.getElementById("imageInput");
 
     const preview = document.getElementById("preview");
 
-    if(input){
+    if (input) {
 
-        input.addEventListener("change", function(){
+        input.addEventListener("change", function () {
 
             const file = this.files[0];
 
-            if(file){
+            if (file) {
 
                 preview.src = URL.createObjectURL(file);
 
@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", function(){
 // Loading Animation
 // =======================
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("uploadForm");
 
-    if(form){
+    if (form) {
 
-        form.addEventListener("submit", function(){
+        form.addEventListener("submit", function () {
 
             document.getElementById("loading").style.display = "flex";
 

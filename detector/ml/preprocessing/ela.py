@@ -1,3 +1,4 @@
+# pyrefly: ignore[missing-import]
 from PIL import Image, ImageChops, ImageEnhance
 import os
 

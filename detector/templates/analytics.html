@@ -73,7 +73,7 @@
         <h3>Live Detection Logs Analysis</h3>
         <p class="text-muted">Real-time statistics compiled from actual user uploads and ViT model evaluations.</p>
         <hr>
-        
+
         <div class="row text-center mb-4">
             <div class="col-md-4">
                 <div class="p-3 border rounded bg-dark text-white">
@@ -117,7 +117,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             fetch("/api/analytics-data/")
                 .then(response => response.json())
                 .then(data => {
@@ -125,7 +125,7 @@
                     document.getElementById("total-uploads").innerText = data.total;
                     document.getElementById("avg-confidence").innerText = data.avg_confidence + "%";
                     document.getElementById("avg-tampered-pct").innerText = data.avg_tampered_pct + "%";
-                    
+
                     if (data.total > 0) {
                         // Prediction Doughnut Chart
                         const ctxPred = document.getElementById('predictionChart').getContext('2d');
@@ -149,7 +149,7 @@
                                 }
                             }
                         });
-                        
+
                         // Activity Line Chart
                         const ctxAct = document.getElementById('activityChart').getContext('2d');
                         new Chart(ctxAct, {
@@ -254,8 +254,7 @@
 
                 <h5 class="text-center">Loss Curve</h5>
 
-                <img src="/media/results/loss_curve.png"
-                     class="img-fluid">
+                <img src="/media/results/loss_curve.png" class="img-fluid">
 
             </div>
 
@@ -267,8 +266,7 @@
 
                 <h5 class="text-center">Accuracy Curve</h5>
 
-                <img src="/media/results/accuracy_curve.png"
-                     class="img-fluid">
+                <img src="/media/results/accuracy_curve.png" class="img-fluid">
 
             </div>
 
@@ -280,8 +278,7 @@
 
                 <h5 class="text-center">ROC Curve</h5>
 
-                <img src="/media/results/roc_curve.png"
-                     class="img-fluid">
+                <img src="/media/results/roc_curve.png" class="img-fluid">
 
             </div>
 
@@ -293,8 +290,7 @@
 
                 <h5 class="text-center">Confusion Matrix</h5>
 
-                <img src="/media/results/confusion_matrix.png"
-                     class="img-fluid">
+                <img src="/media/results/confusion_matrix.png" class="img-fluid">
 
             </div>
 
